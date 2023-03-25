@@ -62,32 +62,35 @@ function onSubmitChat(event: Event) {
     <!-- <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div> -->
 
     <div class="chatbox">
-      <div class="grow">
+      <div class="w-80 flex flex-col">
         <header class="border-solid border-b border-black p-2">
           <h1>
             Chat room: <span class="bg-gray-200"> {{ $route.params.id }}</span>
           </h1>
         </header>
-        <ChatBubble
-          v-for="(chat, index) in chats"
-          :key="index"
-          :message="chat.message"
-          :username="chat.username"
-          :sent-on="chat.sent"
-          :is-author="chat.isAuthor"
-          :avatar-url="chat.userAvatar"
-        />
 
-        <form @submit="onSubmitChat" class="absolute bottom-0 left-0">
+        <div class="h-full bg-gray-200 overflow-y-auto p-2">
+          <ChatBubble
+            v-for="(chat, index) in chats"
+            :key="index"
+            :message="chat.message"
+            :username="chat.username"
+            :sent-on="chat.sent"
+            :is-author="chat.isAuthor"
+            :avatar-url="chat.userAvatar"
+          />
+        </div>
+
+        <form @submit="onSubmitChat" class="w-full">
           <input
             type="text"
-            placeholder="Insert text"
-            class="input input-bordered w-full max-w-xs"
+            placeholder="Insert message"
+            class="input input-bordered block w-full max-w-xs rounded-none"
             v-model="chatInput"
           />
         </form>
       </div>
-      <div class="w-20 border-l border-solid border-black p-4">
+      <div class="border-l border-solid border-black p-4">
         <!-- <div
           class="w-12 h-12 border border-black border-solid rounded-full"
         ></div>
