@@ -10,11 +10,11 @@ import RoomVue from '../views/Room.vue';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: MainVue,
+    component: () => MainVue,
   },
   {
     path: '/room/:id',
-    component: RoomVue,
+    component: () => RoomVue,
   },
 ];
 
