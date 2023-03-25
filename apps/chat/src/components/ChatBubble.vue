@@ -31,7 +31,9 @@ const formattedSentTime = computed(() => {
       {{ username }}
       <time className="text-xs opacity-50">{{ formattedSentTime }}</time>
     </div>
-    <div className="chat-bubble">{{ message }}</div>
+    <div :className="`chat-bubble break-all ${isAuthor ? 'bg-pink-600' : ''}`">
+      {{ message }}
+    </div>
     <!-- <div className="chat-footer opacity-50">Seen at 12:46</div> -->
   </div>
 </template>
