@@ -22,7 +22,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join', (room) => {
+    console.log(`${socket.id} joined ${room}`);
     socket.join(room);
+  });
+
+  socket.on('leave', (room) => {
+    console.log(`${socket.id} left ${room}`);
+    socket.leave(room);
   });
 
   socket.on('disconnect', () => {

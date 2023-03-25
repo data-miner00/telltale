@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
 import { socket } from '../socket';
 import ChatBubble from '../components/ChatBubble.vue';
+
+const route = useRoute();
 
 type Chat = {
   username: string;
@@ -16,6 +19,27 @@ type Chat = {
 const store = useUserStore();
 const { username, userId } = storeToRefs(store);
 
+const roomInput = ref('');
+const chatInput = ref('');
+const chats = ref<Chat[]>([]);
+
+watch(
+  () => route.params.id,
+  async (newId, oldId) => {
+    if (oldId) socket.emit('leave', oldId);
+    socket.emit('join', newId);
+    chats.value.length = 0;
+  }
+);
+
+onMounted(() => {
+  socket.emit('join', route.params.id);
+});
+
+onUnmounted(() => {
+  socket.emit('leave', route.params.id);
+});
+
 socket.on('message', (message) => {
   chats.value.push({
     username: message.username as string,
@@ -26,22 +50,22 @@ socket.on('message', (message) => {
   });
 });
 
-const roomInput = ref('');
-const chatInput = ref('');
-const chats = ref<Chat[]>([]);
-
 function onSubmitChat(event: Event) {
   event.preventDefault();
 
   const now = new Date();
 
-  socket.emit('message', {
-    message: chatInput.value,
-    sent: now,
-    username: username.value,
-    userAvatar:
-      'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
-  });
+  socket.emit(
+    'message',
+    {
+      message: chatInput.value,
+      sent: now,
+      username: username.value,
+      userAvatar:
+        'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
+    },
+    route.params.id
+  );
 
   chats.value.push({
     message: chatInput.value,
