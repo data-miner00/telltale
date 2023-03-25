@@ -1,29 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
+import router from '../routes';
 
 const room = ref();
 const username = ref('');
-const password = ref('');
 
 const userStore = useUserStore();
-const { username: un, userId } = storeToRefs(userStore);
-const { setUserId, setUsername } = userStore;
+const { setUsername } = userStore;
 
 function handleLogin(event: Event) {
   event.preventDefault();
-  console.log('submited');
-  setUserId(Math.random().toString());
   setUsername(username.value);
+  router.push({ path: `/room/lobby` });
 }
 </script>
 
 <template>
-  <div>
-    <p>Hi {{ un }}, id: {{ userId }}</p>
+  <div class="flex flex-col justify-center items-center h-screen">
+    <div
+      class="text-6xl text-center font-bold uppercase tracking-wide text-cyan-600"
+    >
+      Telltale
+    </div>
     <h1>Sign In</h1>
-    <p>Sign in casually with username and password or connect to Metamask.</p>
+    <p>Join casually with any username or connect with Metamask.</p>
     <form @submit="handleLogin">
       <input
         class="input-bordered input"
@@ -32,14 +33,9 @@ function handleLogin(event: Event) {
         type="text"
         placeholder="Username"
       />
-      <input
-        class="input-bordered input"
-        v-model="password"
-        name="password"
-        type="password"
-        placeholder="Password"
-      />
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <div class="bg-black h-px w-full my-10"></div>
+    <button class="btn btn-primary bg-orange-500">Connect with Metamask</button>
   </div>
 </template>

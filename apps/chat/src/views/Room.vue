@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
+import { socket } from '../socket';
 
 type Chat = {
   username: string;
@@ -9,9 +10,24 @@ type Chat = {
   sent: string;
 };
 
-const { username, userId } = storeToRefs(useUserStore());
+onMounted(() => {
+  socket.connect();
+});
 
-const roomInput = ref('sdff');
+const store = useUserStore();
+const { username, userId } = storeToRefs(store);
+const { setUserId } = store;
+
+socket.on('connect', () => setUserId(socket.id));
+socket.on('message', (message) => {
+  chats.value.push({
+    username: message.username as string,
+    sent: message.sent as string,
+    message: message.message as string,
+  });
+});
+
+const roomInput = ref('');
 const chatInput = ref('');
 const chats = ref<Chat[]>([]);
 
@@ -20,6 +36,12 @@ function onSubmitChat(event: Event) {
 
   const now = new Date();
   const timeString = `${now.getHours()}:${now.getMinutes()}`;
+
+  socket.emit('message', {
+    message: chatInput.value,
+    sent: timeString,
+    username: username.value,
+  });
 
   chats.value.push({
     message: chatInput.value,
@@ -37,13 +59,6 @@ function onSubmitChat(event: Event) {
     <h1 class="alert shadow-lg">Chat Lobby</h1>
     <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div>
 
-    <div class="">
-      <div class="chat chat-start">
-        <div className="chat-bubble chat-bubble-secondary">
-          Put me on the Council and not make me a Master!??
-        </div>
-      </div>
-    </div>
     <div class="chatbox">
       <div class="grow">
         <header class="border-solid border-b border-black p-2">
@@ -96,5 +111,5 @@ button[type=submit]
   @apply rounded px-4 py-2 bg-green-500
 
 .chatbox
-  @apply w-96 h-[600px] border border-solid border-black relative flex
+  @apply w-96 h-[600px] border border-solid border-black relative flex mx-auto
 </style>
