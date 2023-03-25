@@ -3,11 +3,13 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
 import { socket } from '../socket';
+import ChatBubble from '../components/ChatBubble.vue';
 
 type Chat = {
   username: string;
   message: string;
-  sent: string;
+  sent: Date;
+  isAuthor: boolean;
 };
 
 const store = useUserStore();
@@ -16,8 +18,9 @@ const { username, userId } = storeToRefs(store);
 socket.on('message', (message) => {
   chats.value.push({
     username: message.username as string,
-    sent: message.sent as string,
+    sent: new Date(),
     message: message.message as string,
+    isAuthor: false,
   });
 });
 
@@ -29,18 +32,18 @@ function onSubmitChat(event: Event) {
   event.preventDefault();
 
   const now = new Date();
-  const timeString = `${now.getHours()}:${now.getMinutes()}`;
 
   socket.emit('message', {
     message: chatInput.value,
-    sent: timeString,
+    sent: now,
     username: username.value,
   });
 
   chats.value.push({
     message: chatInput.value,
-    sent: timeString,
+    sent: now,
     username: username.value,
+    isAuthor: true,
   });
 
   chatInput.value = '';
@@ -60,21 +63,15 @@ function onSubmitChat(event: Event) {
             Chat room: <span class="bg-gray-200"> {{ $route.params.id }}</span>
           </h1>
         </header>
-        <div v-for="chat in chats" className="chat chat-end">
-          <div className="chat-image avatar">
-            <div className="w-10 rounded-full">
-              <img
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
-            </div>
-          </div>
-          <div className="chat-header">
-            {{ chat.username }}
-            <time className="text-xs opacity-50">{{ chat.sent }}</time>
-          </div>
-          <div className="chat-bubble">{{ chat.message }}</div>
-          <!-- <div className="chat-footer opacity-50">Seen at 12:46</div> -->
-        </div>
+        <ChatBubble
+          v-for="(chat, index) in chats"
+          :key="index"
+          :message="chat.message"
+          :username="chat.username"
+          :sent-on="chat.sent"
+          :is-author="chat.isAuthor"
+          :avatar-url="`https://`"
+        />
 
         <form @submit="onSubmitChat" class="absolute bottom-0 left-0">
           <input
