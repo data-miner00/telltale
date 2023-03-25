@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
 import { socket } from '../socket';
@@ -10,15 +10,9 @@ type Chat = {
   sent: string;
 };
 
-onMounted(() => {
-  socket.connect();
-});
-
 const store = useUserStore();
 const { username, userId } = storeToRefs(store);
-const { setUserId } = store;
 
-socket.on('connect', () => setUserId(socket.id));
 socket.on('message', (message) => {
   chats.value.push({
     username: message.username as string,
@@ -56,8 +50,8 @@ function onSubmitChat(event: Event) {
 <template>
   <div>
     <p>Logged in as {{ username }} with Id {{ userId }}</p>
-    <h1 class="alert shadow-lg">Chat Lobby</h1>
-    <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div>
+
+    <!-- <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div> -->
 
     <div class="chatbox">
       <div class="grow">
@@ -92,7 +86,7 @@ function onSubmitChat(event: Event) {
         </form>
       </div>
       <div class="w-20 border-l border-solid border-black p-4">
-        <div
+        <!-- <div
           class="w-12 h-12 border border-black border-solid rounded-full"
         ></div>
         <div
@@ -100,7 +94,7 @@ function onSubmitChat(event: Event) {
         ></div>
         <div
           class="w-12 h-12 border border-black border-solid rounded-full"
-        ></div>
+        ></div> -->
       </div>
     </div>
   </div>
