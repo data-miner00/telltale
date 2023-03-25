@@ -10,6 +10,7 @@ type Chat = {
   message: string;
   sent: Date;
   isAuthor: boolean;
+  userAvatar: string;
 };
 
 const store = useUserStore();
@@ -21,6 +22,7 @@ socket.on('message', (message) => {
     sent: new Date(),
     message: message.message as string,
     isAuthor: false,
+    userAvatar: message.userAvatar as string,
   });
 });
 
@@ -37,6 +39,8 @@ function onSubmitChat(event: Event) {
     message: chatInput.value,
     sent: now,
     username: username.value,
+    userAvatar:
+      'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
   });
 
   chats.value.push({
@@ -44,6 +48,7 @@ function onSubmitChat(event: Event) {
     sent: now,
     username: username.value,
     isAuthor: true,
+    userAvatar: 'https://randomuser.me/api/portraits/men/24.jpg',
   });
 
   chatInput.value = '';
@@ -70,7 +75,7 @@ function onSubmitChat(event: Event) {
           :username="chat.username"
           :sent-on="chat.sent"
           :is-author="chat.isAuthor"
-          :avatar-url="`https://`"
+          :avatar-url="chat.userAvatar"
         />
 
         <form @submit="onSubmitChat" class="absolute bottom-0 left-0">
