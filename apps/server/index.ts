@@ -1,6 +1,12 @@
 import http from 'http';
 import { Server } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
+import { config } from 'dotenv';
+import { completion } from './lib/gpt';
+
+config();
+
+const openaiApiKey = process.env.OPENAI_API_KEY;
 
 const server = http.createServer();
 const io = new Server(server, {
@@ -35,13 +41,27 @@ userIo.use((socket, next) => {
 io.on('connection', (socket) => {
   console.log('Connected: ', socket.id);
 
-  socket.on('message', (message, room) => {
+  socket.on('message', (message, room: string) => {
     console.log(message);
     // io.emit('message', args);
     if (!room) {
       socket.broadcast.emit('message', message);
     } else {
       socket.to(room).emit('message', message);
+    }
+
+    if (message.message.startsWith('gpt ')) {
+      completion(message.message.slice(4), openaiApiKey!).then((res) => {
+        console.log(res);
+        if (res.data) {
+          socket.nsp.to(room).emit('message', {
+            message: res.data[0]?.content,
+            sent: new Date(),
+            username: 'GPT',
+            userAvatar: 'https://chat.openai.com/favicon-32x32.png',
+          });
+        }
+      });
     }
   });
 
