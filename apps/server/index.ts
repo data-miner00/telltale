@@ -1,11 +1,35 @@
 import http from 'http';
 import { Server } from 'socket.io';
+import { instrument } from '@socket.io/admin-ui';
 
 const server = http.createServer();
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: [
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      'https://admin.socket.io',
+    ],
+    credentials: true,
   },
+});
+
+const userIo = io.of('/user');
+userIo.on('connection', (socket) => {
+  console.log(socket.id + ' connected to user namespace');
+});
+
+userIo.on('connect_error', (error) => {
+  console.log(error);
+});
+
+userIo.use((socket, next) => {
+  if (socket.handshake.auth.token) {
+    // do thing
+    next();
+  } else {
+    next(new Error('Please send token'));
+  }
 });
 
 io.on('connection', (socket) => {
@@ -39,3 +63,5 @@ io.on('connection', (socket) => {
 server.listen(3030, () => {
   console.log('Server listening on *:3030');
 });
+
+instrument(io, { auth: false });
