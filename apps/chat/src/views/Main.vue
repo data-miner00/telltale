@@ -18,24 +18,38 @@ function handleLogin(event: Event) {
 
 <template>
   <div class="flex flex-col justify-center items-center h-screen">
-    <div
-      class="text-6xl text-center font-bold uppercase tracking-wide text-cyan-600"
-    >
-      Telltale
+    <div class="">
+      <div
+        class="text-2xl text-center font-extrabold uppercase tracking-wide mb-20"
+      >
+        Telltale.
+      </div>
+      <p class="text-3xl font-bold text-center mb-2">
+        Sign in with your choice
+      </p>
+      <p class="text-center max-w-sm mb-5">
+        Chat anonymously. Get started by arbitrary insert a username so that
+        others can address you. Enjoy real-time chats, GPT-enabled bot and
+        sending cryptos.
+      </p>
+      <!-- <h1>Sign In</h1>
+      <p>Join casually with any username or connect with Metamask.</p> -->
+      <form @submit="handleLogin" class="flex flex-col">
+        <input
+          class="input-bordered input mb-5"
+          v-model="username"
+          name="username"
+          type="text"
+          placeholder="Username"
+        />
+        <button type="submit" class="btn btn-primary block">Let's go</button>
+      </form>
+      <div class="divider">OR</div>
+      <button
+        class="btn btn-ghost border border-gray-200 border-solid block w-full"
+      >
+        Connect with Metamask
+      </button>
     </div>
-    <h1>Sign In</h1>
-    <p>Join casually with any username or connect with Metamask.</p>
-    <form @submit="handleLogin">
-      <input
-        class="input-bordered input"
-        v-model="username"
-        name="username"
-        type="text"
-        placeholder="Username"
-      />
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <div class="bg-black h-px w-full my-10"></div>
-    <button class="btn btn-primary bg-orange-500">Connect with Metamask</button>
   </div>
 </template>
