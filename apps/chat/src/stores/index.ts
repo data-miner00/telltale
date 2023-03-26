@@ -5,8 +5,9 @@ export const useUserStore = defineStore('user', {
     userId: '',
     username: 'Anon',
     password: '',
-    profilePic: '',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/24.jpg',
     web3User: false,
+    openAiKey: '',
   }),
   getters: {},
   actions: {
@@ -16,6 +17,9 @@ export const useUserStore = defineStore('user', {
     },
     setUserId(userId: string) {
       this.userId = userId;
+    },
+    setAvatarUrl(url: string) {
+      this.avatarUrl = url;
     },
   },
 });

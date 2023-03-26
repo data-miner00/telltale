@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
 import { socket } from '../socket';
 import ChatBubble from '../components/ChatBubble.vue';
+import UserPane from '../components/UserPane.vue';
 
 const route = useRoute();
 
@@ -17,7 +18,7 @@ type Chat = {
 };
 
 const store = useUserStore();
-const { username, userId } = storeToRefs(store);
+const { username, userId, avatarUrl } = storeToRefs(store);
 
 const roomInput = ref('');
 const chatInput = ref('');
@@ -72,7 +73,7 @@ function onSubmitChat(event: Event) {
     sent: now,
     username: username.value,
     isAuthor: true,
-    userAvatar: 'https://randomuser.me/api/portraits/men/24.jpg',
+    userAvatar: avatarUrl.value,
   });
 
   chatInput.value = '';
@@ -80,9 +81,8 @@ function onSubmitChat(event: Event) {
 </script>
 
 <template>
+  <UserPane />
   <div>
-    <p>Logged in as {{ username }} with Id {{ userId }}</p>
-
     <!-- <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div> -->
 
     <div class="chatbox">
