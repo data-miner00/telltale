@@ -6,6 +6,7 @@ import { useUserStore } from '../stores';
 import { socket } from '../socket';
 import ChatBubble from '../components/ChatBubble.vue';
 import UserPane from '../components/UserPane.vue';
+import RoomInfo from '../components/RoomInfo.vue';
 
 const route = useRoute();
 
@@ -20,6 +21,7 @@ type Chat = {
 const store = useUserStore();
 const { username, userId, avatarUrl } = storeToRefs(store);
 
+const chatContainer = ref<HTMLDivElement>();
 const roomInput = ref('');
 const chatInput = ref('');
 const chats = ref<Chat[]>([]);
@@ -49,6 +51,10 @@ socket.on('message', (message) => {
     isAuthor: false,
     userAvatar: message.userAvatar as string,
   });
+
+  if (chatContainer.value) {
+    chatContainer.value.scrollTop = chatContainer.value?.scrollHeight || 0;
+  }
 });
 
 function onSubmitChat(event: Event) {
@@ -76,24 +82,23 @@ function onSubmitChat(event: Event) {
     userAvatar: avatarUrl.value,
   });
 
+  if (chatContainer.value) {
+    chatContainer.value.scrollTop = chatContainer.value?.scrollHeight || 0;
+  }
+
   chatInput.value = '';
 }
 </script>
 
 <template>
   <UserPane />
-  <div>
+  <RoomInfo :room="$route.params.id" />
+  <div class="mt-32">
     <!-- <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div> -->
 
     <div class="chatbox">
       <div class="w-80 flex flex-col">
-        <header class="border-solid border-b border-black p-2">
-          <h1>
-            Chat room: <span class="bg-gray-200"> {{ $route.params.id }}</span>
-          </h1>
-        </header>
-
-        <div class="h-full bg-gray-200 overflow-y-auto p-2">
+        <div class="h-full bg-gray-200 overflow-y-auto p-2" ref="chatContainer">
           <ChatBubble
             v-for="(chat, index) in chats"
             :key="index"
