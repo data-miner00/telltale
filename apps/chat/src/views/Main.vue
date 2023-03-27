@@ -1,16 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import { useUserStore } from '../stores';
 import router from '../routes';
 
 const room = ref();
 const username = ref('');
+const usernameInput = ref<HTMLInputElement>();
 
 const userStore = useUserStore();
 const { setUsername } = userStore;
 
+onBeforeMount(() => {
+  // Use Navigation Guard
+  if (localStorage.username) {
+    router.push({ path: `/room/lobby` });
+  }
+});
+
 function handleLogin(event: Event) {
   event.preventDefault();
+  if (!username.value && usernameInput.value) {
+    usernameInput.value.classList.add('border-red-500');
+    return;
+  }
+
   setUsername(username.value);
   router.push({ path: `/room/lobby` });
 }
@@ -36,6 +49,7 @@ function handleLogin(event: Event) {
       <p>Join casually with any username or connect with Metamask.</p> -->
       <form @submit="handleLogin" class="flex flex-col">
         <input
+          ref="usernameInput"
           class="input-bordered input mb-5"
           v-model="username"
           name="username"

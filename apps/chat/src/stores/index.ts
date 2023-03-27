@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
   state: () => ({
     userId: '',
-    username: 'Anon',
+    username: localStorage.username ?? 'Anon',
     password: '',
     avatarUrl: 'https://randomuser.me/api/portraits/men/24.jpg',
     web3User: false,
@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     setUser() {},
     setUsername(username: string) {
+      localStorage.username = username;
       this.username = username;
     },
     setUserId(userId: string) {
