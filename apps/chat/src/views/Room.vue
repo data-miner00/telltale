@@ -5,7 +5,6 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '../lib/shared/shared.stores';
 import { socket } from '../lib/shared/shared.socket';
 import ChatBubble from '@/lib/modules/chat/ChatBubble.vue';
-import UserPane from '../components/UserPane.vue';
 import RoomInfo from '../components/RoomInfo.vue';
 import { type Chat } from '../lib/shared/shared.types';
 import { MOCK_AVATAR_URL_FEMALE } from '@/lib/shared/shared.constants';
@@ -84,8 +83,7 @@ function onSubmitChat(event: Event) {
 </script>
 
 <template>
-  <UserPane />
-  <RoomInfo :room="$route.params.id" />
+  <!-- <RoomInfo :room="$route.params.id" /> -->
   <div class="mt-32">
     <!-- <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div> -->
 

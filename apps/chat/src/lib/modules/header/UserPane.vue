@@ -1,24 +1,22 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useUserStore } from '../lib/shared/shared.stores';
+import { useUserStore } from '../../shared/shared.stores';
+import { truncateWithEllipsis } from '@/lib/shared/shared.utils';
 
 const store = useUserStore();
 const { username, userId, avatarUrl } = storeToRefs(store);
 
-function shortenWithEllipsis(text: string) {
-  return text.slice(0, 3) + '...' + text.slice(-3);
-}
+const shortenedId = computed(() => truncateWithEllipsis(userId.value, 4));
 </script>
 
 <template>
-  <div
-    class="absolute right-10 top-10 border border-solid shadow-sm border-gray-200 py-1 px-2 flex items-center rounded-full"
-  >
+  <div class="flex items-center">
     <div class="text-right mx-2">
       <p class="font-bold max-w-[100px] overflow-hidden overflow-ellipsis">
         {{ username }}
       </p>
-      <p class="text-xs text-gray-400">{{ shortenWithEllipsis(userId) }}</p>
+      <p class="text-xs text-gray-400">{{ shortenedId }}</p>
     </div>
 
     <div class="avatar">

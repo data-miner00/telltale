@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Sidebar from '../sidebar/Sidebar.vue';
+import Header from '../header/Header.vue';
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import Sidebar from '../sidebar/Sidebar.vue';
     </aside>
 
     <section class="w-full">
+      <Header />
       <slot />
     </section>
   </div>
