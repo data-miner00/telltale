@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useUserStore } from '../stores';
+import { useUserStore } from '../lib/shared/shared.stores';
 
 const store = useUserStore();
 const { username, userId, avatarUrl } = storeToRefs(store);

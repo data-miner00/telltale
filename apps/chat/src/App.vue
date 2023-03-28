@@ -2,8 +2,8 @@
 import { onMounted } from 'vue';
 import { RouterView } from 'vue-router';
 import Navigator from './components/Navigator.vue';
-import { socket } from './socket';
-import { useUserStore } from './stores';
+import { socket } from './lib/shared/shared.socket';
+import { useUserStore } from './lib/shared/shared.stores';
 
 const { setUserId } = useUserStore();
 

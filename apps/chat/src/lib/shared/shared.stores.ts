@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
+import { MOCK_AVATAR_URL_MALE } from '@/lib/shared/shared.constants';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     userId: '',
     username: localStorage.username ?? 'Anon',
     password: '',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/24.jpg',
+    avatarUrl: MOCK_AVATAR_URL_MALE,
     web3User: false,
     openAiKey: '',
   }),

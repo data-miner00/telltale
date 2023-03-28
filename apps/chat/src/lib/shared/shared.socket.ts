@@ -1,5 +1,6 @@
 import { reactive } from 'vue';
 import { io } from 'socket.io-client';
+import { SOCKET_URL } from '@/lib/shared/shared.constants';
 
 type State = {
   connected: boolean;
@@ -13,9 +14,7 @@ export const state = reactive<State>({
   barEvents: [],
 });
 
-const URL = 'http://localhost:3030';
-
-export const socket = io(URL);
+export const socket = io(SOCKET_URL);
 
 socket.on('connect', () => {
   state.connected = true;

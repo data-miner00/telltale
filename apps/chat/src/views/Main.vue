@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
-import { useUserStore } from '../stores';
+import { useUserStore } from '../lib/shared/shared.stores';
 import router from '@/lib/shared/shared.router';
 
 const room = ref();
