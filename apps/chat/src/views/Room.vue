@@ -128,9 +128,6 @@ function onSubmitChat(event: Event) {
 </template>
 
 <style lang="sass" scoped>
-button[type=submit]
-  @apply rounded px-4 py-2 bg-green-500
-
 .chatbox
   @apply w-96 h-[600px] border border-solid border-black relative flex mx-auto
 </style>
