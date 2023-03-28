@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
 import { useUserStore } from '../stores';
-import router from '../routes';
+import router from '@/lib/shared/shared.router';
 
 const room = ref();
 const username = ref('');

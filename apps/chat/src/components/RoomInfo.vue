@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import router from '../routes';
+import router from '@/lib/shared/shared.router';
 
 defineProps(['room']);
 

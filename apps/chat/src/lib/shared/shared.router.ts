@@ -4,8 +4,8 @@ import {
   createRouter,
   createWebHashHistory,
 } from 'vue-router';
-import MainVue from '../views/Main.vue';
-import RoomVue from '../views/Room.vue';
+import MainVue from '@/views/Main.vue';
+import RoomVue from '@/views/Room.vue';
 
 const routes: RouteRecordRaw[] = [
   {
