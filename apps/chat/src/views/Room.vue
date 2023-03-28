@@ -7,16 +7,9 @@ import { socket } from '../socket';
 import ChatBubble from '../components/ChatBubble.vue';
 import UserPane from '../components/UserPane.vue';
 import RoomInfo from '../components/RoomInfo.vue';
+import { type Chat } from '../lib/shared/shared.types';
 
 const route = useRoute();
-
-type Chat = {
-  username: string;
-  message: string;
-  sent: Date;
-  isAuthor: boolean;
-  userAvatar: string;
-};
 
 const store = useUserStore();
 const { username, userId, avatarUrl } = storeToRefs(store);
