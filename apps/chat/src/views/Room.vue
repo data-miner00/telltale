@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../stores';
 import { socket } from '../socket';
-import ChatBubble from '../components/ChatBubble.vue';
+import ChatBubble from '@/lib/modules/chat/ChatBubble.vue';
 import UserPane from '../components/UserPane.vue';
 import RoomInfo from '../components/RoomInfo.vue';
 import { type Chat } from '../lib/shared/shared.types';
