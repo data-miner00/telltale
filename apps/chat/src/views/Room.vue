@@ -4,18 +4,16 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../lib/shared/shared.stores';
 import { socket } from '../lib/shared/shared.socket';
-import ChatBubble from '@/lib/modules/chat/ChatBubble.vue';
-import RoomInfo from '../components/RoomInfo.vue';
 import { type Chat } from '../lib/shared/shared.types';
 import { MOCK_AVATAR_URL_FEMALE } from '@/lib/shared/shared.constants';
+import ChatMessage from '@/lib/modules/chat/ChatMessage.vue';
+import ChatInput from '@/lib/modules/chat/ChatInput.vue';
 
 const route = useRoute();
-
 const store = useUserStore();
-const { username, userId, avatarUrl } = storeToRefs(store);
+const { username, avatarUrl } = storeToRefs(store);
 
 const chatContainer = ref<HTMLDivElement>();
-const roomInput = ref('');
 const chatInput = ref('');
 const chats = ref<Chat[]>([]);
 
@@ -50,15 +48,13 @@ socket.on('message', (message) => {
   }
 });
 
-function onSubmitChat(event: Event) {
-  event.preventDefault();
-
+function onSubmitChat(message: any) {
   const now = new Date();
 
   socket.emit(
     'message',
     {
-      message: chatInput.value,
+      message,
       sent: now,
       username: username.value,
       userAvatar: MOCK_AVATAR_URL_FEMALE,
@@ -67,7 +63,7 @@ function onSubmitChat(event: Event) {
   );
 
   chats.value.push({
-    message: chatInput.value,
+    message,
     sent: now,
     username: username.value,
     isAuthor: true,
@@ -83,49 +79,28 @@ function onSubmitChat(event: Event) {
 </script>
 
 <template>
-  <!-- <RoomInfo :room="$route.params.id" /> -->
-  <div class="mt-32">
-    <!-- <div>Press <kbd className="kbd kbd-sm">F</kbd> to pay respects.</div> -->
-
-    <div class="chatbox">
-      <div class="w-80 flex flex-col">
-        <div class="h-full bg-gray-200 overflow-y-auto p-2" ref="chatContainer">
-          <ChatBubble
-            v-for="(chat, index) in chats"
-            :key="index"
-            :message="chat.message"
-            :username="chat.username"
-            :sent-on="chat.sent"
-            :is-author="chat.isAuthor"
-            :avatar-url="chat.userAvatar"
-          />
-        </div>
-
-        <form @submit="onSubmitChat" class="w-full">
-          <input
-            type="text"
-            placeholder="Insert message"
-            class="input input-bordered block w-full max-w-xs rounded-none"
-            v-model="chatInput"
-          />
-        </form>
-      </div>
-      <div class="border-l border-solid border-black p-4">
-        <!-- <div
-          class="w-12 h-12 border border-black border-solid rounded-full"
-        ></div>
-        <div
-          class="w-12 h-12 border border-black border-solid rounded-full"
-        ></div>
-        <div
-          class="w-12 h-12 border border-black border-solid rounded-full"
-        ></div> -->
+  <div class="h-full w-full overflow-hidden relative">
+    <div class="overflow-y-auto h-full">
+      <ChatMessage
+        v-for="(chat, index) in chats"
+        :key="index"
+        :message="chat.message"
+        :avatar-url="chat.userAvatar"
+      />
+      <div class="h-32"></div>
+    </div>
+    <div
+      class="absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white dark:bg-gray-800 md:!bg-transparent dark:md:bg-vert-dark-gradient pt-2 bg-gradient-to-b from-transparent via-white to-white"
+    >
+      <div class="h-9"></div>
+      <ChatInput @message-fired="onSubmitChat" />
+      <div
+        class="px-3 pt-2 pb-3 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6"
+      >
+        <span class="underline">Telltale ChatGPT Mar 14 Version</span>. Free
+        Research Preview. Our goal is to mingle AI systems with the vibrant
+        community through thought sharing and communication.
       </div>
     </div>
   </div>
 </template>
-
-<style lang="sass" scoped>
-.chatbox
-  @apply w-96 h-[600px] border border-solid border-black relative flex mx-auto
-</style>
