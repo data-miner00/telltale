@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useStorage } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../lib/shared/shared.stores';
@@ -11,10 +12,10 @@ import ChatInput from '@/lib/modules/chat/ChatInput.vue';
 
 const route = useRoute();
 const store = useUserStore();
+const chatsStorage = useStorage<Chat[]>(`${route.params.id}-chat-history`, []);
 const { username, avatarUrl } = storeToRefs(store);
 
 const chatContainer = ref<HTMLDivElement>();
-const chatInput = ref('');
 const chats = ref<Chat[]>([]);
 
 watch(
@@ -28,6 +29,8 @@ watch(
 
 onMounted(() => {
   socket.emit('join', route.params.id);
+
+  chats.value = chatsStorage.value;
 });
 
 onUnmounted(() => {
@@ -49,6 +52,8 @@ socket.on('message', (message) => {
       behavior: 'smooth',
     });
   }
+
+  chatsStorage.value = chats.value;
 });
 
 function onSubmitChat(message: any) {
@@ -79,8 +84,7 @@ function onSubmitChat(message: any) {
       behavior: 'smooth',
     });
   }
-
-  chatInput.value = '';
+  chatsStorage.value = chats.value;
 }
 </script>
 
