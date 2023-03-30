@@ -44,7 +44,10 @@ socket.on('message', (message) => {
   });
 
   if (chatContainer.value) {
-    chatContainer.value.scrollTop = chatContainer.value?.scrollHeight || 0;
+    chatContainer.value?.scrollTo({
+      top: chatContainer.value?.scrollHeight,
+      behavior: 'smooth',
+    });
   }
 });
 
@@ -71,7 +74,10 @@ function onSubmitChat(message: any) {
   });
 
   if (chatContainer.value) {
-    chatContainer.value.scrollTop = chatContainer.value?.scrollHeight || 0;
+    chatContainer.value?.scrollTo({
+      top: chatContainer.value?.scrollHeight,
+      behavior: 'smooth',
+    });
   }
 
   chatInput.value = '';
