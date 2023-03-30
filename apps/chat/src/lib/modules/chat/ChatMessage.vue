@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { marked } from 'marked';
 import { MOCK_AVATAR_URL_MALE } from '@/lib/shared/shared.constants';
 
 defineProps({
@@ -21,9 +22,10 @@ defineProps({
       <div class="shrink-0">
         <img class="h-8 w-8 rounded-sm" :src="avatarUrl" alt="User avatar" />
       </div>
-      <article class="break-words overflow-hidden">
-        {{ message }}
-      </article>
+      <article
+        class="break-words overflow-hidden"
+        v-html="marked.parse(message)"
+      ></article>
     </div>
   </div>
 </template>
