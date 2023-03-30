@@ -6,7 +6,7 @@ import CurrentRoom from './CurrentRoom.vue';
 
 <template>
   <header
-    class="border-b border-solid border-gray-200 h-16 w-full sticky top-0 left-0 flex items-center justify-between px-10"
+    class="border-b border-solid border-gray-200 h-16 w-full sticky top-0 left-0 flex items-center justify-between px-10 z-20 bg-white"
   >
     <CurrentRoom />
     <JoinRoom />

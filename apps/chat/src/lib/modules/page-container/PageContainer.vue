@@ -5,7 +5,7 @@ import Header from '../header/Header.vue';
 
 <template>
   <div class="flex flex-1">
-    <aside class="z-20 md:w-72">
+    <aside class="z-20 md:w-72 shrink-0">
       <Sidebar />
     </aside>
 
