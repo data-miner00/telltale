@@ -12,6 +12,7 @@ function tryPublishMessage() {
   if (!message.value) return;
 
   emit('messageFired', message.value);
+  message.value = '';
 }
 </script>
 
