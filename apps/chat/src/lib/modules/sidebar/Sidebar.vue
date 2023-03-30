@@ -8,9 +8,7 @@ const items = [
 </script>
 
 <template>
-  <div
-    class="md:w-72 bg-slate-800 flex h-screen flex-1 flex-col space-y-1 p-2 fixed top-0 left-0"
-  >
+  <div class="w-full bg-slate-800 flex h-screen flex-1 flex-col space-y-1 p-2">
     <div
       class="py-5 text-white uppercase font-extrabold tracking-widest text-xl text-center"
     >
