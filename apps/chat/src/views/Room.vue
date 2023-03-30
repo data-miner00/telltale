@@ -80,14 +80,14 @@ function onSubmitChat(message: any) {
 
 <template>
   <div class="h-full w-full overflow-hidden relative">
-    <div class="overflow-y-auto h-full">
+    <div class="overflow-y-auto h-full" ref="chatContainer">
       <ChatMessage
         v-for="(chat, index) in chats"
         :key="index"
         :message="chat.message"
         :avatar-url="chat.userAvatar"
       />
-      <div class="h-32"></div>
+      <div class="h-52"></div>
     </div>
     <div
       class="absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white dark:bg-gray-800 md:!bg-transparent dark:md:bg-vert-dark-gradient pt-2 bg-gradient-to-b from-transparent via-white to-white"
