@@ -7,6 +7,8 @@ import { completion } from './lib/gpt';
 config();
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
+const socketDashboardUsername = process.env.SOCKET_DASHBOARD_USERNAME ?? '';
+const socketDashboardPassword = process.env.SOCKET_DASHBOARD_PASSWORD ?? '';
 
 const server = http.createServer();
 const io = new Server(server, {
@@ -84,4 +86,10 @@ server.listen(3030, () => {
   console.log('Server listening on *:3030');
 });
 
-instrument(io, { auth: false });
+instrument(io, {
+  auth: {
+    type: 'basic',
+    username: socketDashboardUsername,
+    password: socketDashboardPassword,
+  },
+});
