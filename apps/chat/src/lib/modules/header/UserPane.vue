@@ -4,11 +4,18 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../shared/shared.stores';
 import { truncateWithEllipsis } from '@/lib/shared/shared.utils';
 import { ChevronDown, Person, Exit } from '@/lib/shared/icons';
+import router from '@/lib/shared/shared.router';
 
 const store = useUserStore();
 const { username, userId, avatarUrl } = storeToRefs(store);
 
 const shortenedId = computed(() => truncateWithEllipsis(userId.value, 4));
+
+function logout(event: Event) {
+  event.preventDefault();
+  localStorage.removeItem('username');
+  router.push('/');
+}
 </script>
 
 <template>
@@ -62,7 +69,9 @@ const shortenedId = computed(() => truncateWithEllipsis(userId.value, 4));
         >
       </li>
       <li>
-        <a href="" class="flex py-3 px-3 items-center gap-3"><Exit />Logout</a>
+        <a href="/" @click="logout" class="flex py-3 px-3 items-center gap-3"
+          ><Exit />Logout</a
+        >
       </li>
     </ul>
   </div>

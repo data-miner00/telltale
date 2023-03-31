@@ -13,8 +13,14 @@ const routes: RouteRecordRaw[] = [
     component: () => MainVue,
   },
   {
-    path: '/room/:id',
-    component: () => RoomVue,
+    path: '/room',
+    component: () => import('../modules/page-container/PageContainer.vue'),
+    children: [
+      {
+        path: ':id',
+        component: () => RoomVue,
+      },
+    ],
   },
 ];
 

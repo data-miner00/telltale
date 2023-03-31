@@ -11,7 +11,7 @@ import Header from '../header/Header.vue';
 
     <section class="w-full md:pl-72 h-[calc(100vh-64px)]">
       <Header />
-      <slot />
+      <router-view></router-view>
     </section>
   </div>
 </template>
