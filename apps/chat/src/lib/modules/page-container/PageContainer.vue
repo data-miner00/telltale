@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import Sidebar from '../sidebar/Sidebar.vue';
 import Header from '../header/Header.vue';
+
+const route = useRoute();
 </script>
 
 <template>
@@ -11,7 +14,7 @@ import Header from '../header/Header.vue';
 
     <section class="w-full md:pl-72 h-[calc(100vh-64px)]">
       <Header />
-      <router-view></router-view>
+      <router-view :key="(route.params.id as string)"></router-view>
     </section>
   </div>
 </template>

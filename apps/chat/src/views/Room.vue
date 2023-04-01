@@ -18,15 +18,6 @@ const { username, avatarUrl } = storeToRefs(store);
 const chatContainer = ref<HTMLDivElement>();
 const chats = ref<Chat[]>([]);
 
-watch(
-  () => route.params.id,
-  async (newId, oldId) => {
-    if (oldId) socket.emit('leave', oldId);
-    socket.emit('join', newId);
-    chats.value.length = 0;
-  }
-);
-
 onMounted(() => {
   socket.emit('join', route.params.id);
 
