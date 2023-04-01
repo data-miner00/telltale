@@ -15,7 +15,7 @@ export type Room = {
 
 export type Chat = {
   username: string;
-  message: string;
+  content: string;
   sent: Date;
   userAvatar: string;
   isAuthor: boolean;

@@ -29,17 +29,14 @@ export class SocketController {
 
       // Handle GPT message
       if (message.content.startsWith('gpt ')) {
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            socket.nsp.to(room).emit('message', {
-              message: 'Message from GPT',
-              sent: new Date(),
-              username: 'GPT',
-              userAvatar: 'https://chat.openai.com/favicon-32x32.png',
-            });
-            resolve(undefined);
-          }, 200);
-        });
+        setTimeout(() => {
+          socket.nsp.to(room).emit('message', {
+            content: 'Message from GPT',
+            sent: new Date(),
+            username: 'GPT',
+            userAvatar: 'https://chat.openai.com/favicon-32x32.png',
+          });
+        }, 200);
       }
     };
   }

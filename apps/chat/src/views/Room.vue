@@ -41,7 +41,7 @@ socket.on('message', (message) => {
   chats.value.push({
     username: message.username as string,
     sent: new Date(),
-    message: message.message as string,
+    content: message.content as string,
     isAuthor: false,
     userAvatar: message.userAvatar as string,
   });
@@ -62,7 +62,7 @@ function onSubmitChat(message: any) {
   socket.emit(
     'message',
     {
-      message,
+      content: message,
       sent: now,
       username: username.value,
       userAvatar: MOCK_AVATAR_URL_FEMALE,
@@ -71,7 +71,7 @@ function onSubmitChat(message: any) {
   );
 
   chats.value.push({
-    message,
+    content: message,
     sent: now,
     username: username.value,
     isAuthor: true,
@@ -94,7 +94,7 @@ function onSubmitChat(message: any) {
       <ChatMessage
         v-for="(chat, index) in chats"
         :key="index"
-        :message="chat.message"
+        :message="chat.content"
         :avatar-url="chat.userAvatar"
       />
       <div class="h-52"></div>
