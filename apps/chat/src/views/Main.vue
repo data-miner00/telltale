@@ -3,7 +3,6 @@ import { ref, onBeforeMount } from 'vue';
 import { useUserStore } from '../lib/shared/shared.stores';
 import router from '@/lib/shared/shared.router';
 
-const room = ref();
 const username = ref('');
 const usernameInput = ref<HTMLInputElement>();
 
@@ -35,7 +34,7 @@ function handleLogin(event: Event) {
       <div
         class="text-2xl text-center font-extrabold uppercase tracking-wide mb-20"
       >
-        Telltale.
+        Telltale
       </div>
       <p class="text-3xl font-bold text-center mb-2">
         Sign in with your choice
@@ -45,8 +44,7 @@ function handleLogin(event: Event) {
         others can address you. Enjoy real-time chats, GPT-enabled bot and
         sending cryptos.
       </p>
-      <!-- <h1>Sign In</h1>
-      <p>Join casually with any username or connect with Metamask.</p> -->
+
       <form @submit="handleLogin" class="flex flex-col">
         <input
           ref="usernameInput"
