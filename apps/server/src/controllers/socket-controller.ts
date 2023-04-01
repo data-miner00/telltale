@@ -2,62 +2,65 @@ import { Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { ILogger } from '../logger';
 
-type MessagePayload = {
+export type MessagePayload = {
   content: string;
   sent: string;
   username: string;
   userAvatar: string;
 };
 
+type SocketAlias = Socket<
+  DefaultEventsMap,
+  DefaultEventsMap,
+  DefaultEventsMap,
+  any
+>;
+
 export class SocketController {
-  constructor(
-    private readonly socket: Socket<
-      DefaultEventsMap,
-      DefaultEventsMap,
-      DefaultEventsMap,
-      any
-    >,
-    private readonly logger: ILogger
-  ) {
-    this.logger.info(`${this.socket.id} has connected`);
+  static message(socket: SocketAlias, logger: ILogger) {
+    return (message: MessagePayload, room: string) => {
+      logger.info(message, typeof message);
+
+      if (!room) {
+        socket.broadcast.emit('message', message);
+      } else {
+        socket.to(room).emit('message', message);
+      }
+
+      // Handle GPT message
+      if (message.content.startsWith('gpt ')) {
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            socket.nsp.to(room).emit('message', {
+              message: 'Message from GPT',
+              sent: new Date(),
+              username: 'GPT',
+              userAvatar: 'https://chat.openai.com/favicon-32x32.png',
+            });
+            resolve(undefined);
+          }, 200);
+        });
+      }
+    };
   }
 
-  message(message: MessagePayload, room: string) {
-    this.logger.info(message, typeof message);
-
-    if (!room) {
-      this.socket.broadcast.emit('message', message);
-    } else {
-      this.socket.to(room).emit('message', message);
-    }
-
-    // Handle GPT message
-    if (message.content.startsWith('gpt ')) {
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          this.socket.nsp.to(room).emit('message', {
-            message: 'Message from GPT',
-            sent: new Date(),
-            username: 'GPT',
-            userAvatar: 'https://chat.openai.com/favicon-32x32.png',
-          });
-          resolve(undefined);
-        }, 200);
-      });
-    }
+  static join(socket: SocketAlias, logger: ILogger) {
+    return (room: string) => {
+      socket.join(room);
+      logger.info(`${socket.id} joined ${room}`);
+    };
   }
 
-  join(room: string) {
-    this.socket.join(room);
-    this.logger.info(`${this.socket.id} joined ${room}`);
+  static leave(socket: SocketAlias, logger: ILogger) {
+    return (room: string) => {
+      socket.leave(room);
+      logger.info(`${socket.id} left ${room}`);
+    };
   }
 
-  leave(room: string) {
-    this.socket.leave(room);
-    this.logger.info(`${this.socket.id} left ${room}`);
-  }
-
-  disconnect() {
-    this.logger.info(`${this.socket.id} has been disconnected`);
+  static disconnect(socket: SocketAlias, logger: ILogger) {
+    return () => {
+      logger.info(`${socket.id} has been disconnected`);
+    };
   }
 }

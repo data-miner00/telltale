@@ -45,11 +45,11 @@ userIo.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
-  const socketController = new SocketController(socket, logger);
-  socket.on('message', socketController.message);
-  socket.on('join', socketController.join);
-  socket.on('leave', socketController.leave);
-  socket.on('disconnect', socketController.leave);
+  logger.info(`${socket.id} has connected`);
+  socket.on('message', SocketController.message(socket, logger));
+  socket.on('join', SocketController.join(socket, logger));
+  socket.on('leave', SocketController.leave(socket, logger));
+  socket.on('disconnect', SocketController.disconnect(socket, logger));
 });
 
 server.listen(3030, () => {
