@@ -44,8 +44,8 @@ function logout(event: Event) {
       tabindex="0"
     >
       <li>
-        <a href="" class="flex py-3 px-3 items-center gap-3"
-          ><Person />Profile</a
+        <router-link to="/profile" class="flex py-3 px-3 items-center gap-3"
+          ><Person />Profile</router-link
         >
       </li>
       <li>

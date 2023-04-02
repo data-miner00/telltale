@@ -22,6 +22,17 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/profile',
+    component: async () =>
+      await import('../modules/page-container/PageContainer.vue'),
+    children: [
+      {
+        path: '',
+        component: async () => await import('../../views/User.vue'),
+      },
+    ],
+  },
 ];
 
 export const router: Router = createRouter({
