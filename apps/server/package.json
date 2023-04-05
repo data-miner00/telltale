@@ -5,7 +5,10 @@
   "scripts": {
     "build": "rm -rf ./build && tsc",
     "dev": "nodemon",
-    "start": "node ./build/src/index.js"
+    "start": "node ./build/src/index.js",
+    "p:migrate": "prisma migrate dev",
+    "p:studio": "prisma studio",
+    "p:format": "prisma format"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
