@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon index.ts"
+    "build": "rm -rf ./build && tsc",
+    "dev": "nodemon",
+    "start": "node ./build/src/index.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

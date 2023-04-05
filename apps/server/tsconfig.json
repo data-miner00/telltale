@@ -11,5 +11,8 @@
     "skipLibCheck": true,
     "outDir": "./build",
     "rootDir": "."
+  },
+  "ts-node": {
+    "files": true
   }
 }
