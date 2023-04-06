@@ -1,2 +1,4 @@
 .env
+build
+prisma/migrations/*
 node_modules
