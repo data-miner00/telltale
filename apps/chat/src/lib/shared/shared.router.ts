@@ -33,6 +33,11 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: async () => await import('../../views/NotFound.vue'),
+  },
 ];
 
 export const router: Router = createRouter({
