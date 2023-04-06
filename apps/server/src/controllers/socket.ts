@@ -4,6 +4,7 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 type Sock = Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
 
 export function onConnection(socket: Sock) {
+  console.log(`${socket.id} has connected!`);
   socket.on('message', (message: any, room: string) => {
     if (!room) {
       socket.broadcast.emit('message', message);

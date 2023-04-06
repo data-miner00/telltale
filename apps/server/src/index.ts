@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import * as c from './settings';
-import { onConnection } from './controllers/SocketController';
+import { onConnection } from './controllers/socket';
 
 const app = express();
 const port = c.PORT;
