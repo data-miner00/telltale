@@ -8,7 +8,8 @@
     "start": "node ./build/src/index.js",
     "p:migrate": "prisma migrate dev",
     "p:studio": "prisma studio",
-    "p:format": "prisma format"
+    "p:format": "prisma format",
+    "p:generate": "prisma generate"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
