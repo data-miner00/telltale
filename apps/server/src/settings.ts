@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import {} from 'crypto';
 
 dotenv.config();
 
@@ -13,3 +14,4 @@ export const SOCKET_DASHBOARD_USERNAME =
   process.env.SOCKET_DASHBOARD_USERNAME || 'root';
 export const SOCKET_DASHBOARD_PASSWORD =
   process.env.SOCKET_DASHBOARD_PASSWORD || '';
+export const JWT_SECRET = process.env.JWT_SECRET || '';
