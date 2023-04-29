@@ -4,6 +4,7 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import * as c from './settings';
 import { onConnection } from './controllers/socket';
+import authRouter from './routes/auth';
 
 const app = express();
 const port = c.PORT;
@@ -18,6 +19,7 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/api/auth', authRouter);
 
 io.on('connection', onConnection);
 
