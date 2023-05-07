@@ -11,34 +11,79 @@ datasource db {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  username         String    @unique
-  password         String?
-  avatar_url       String?
-  email            String?   @unique
-  email_verified   Boolean   @default(false)
-  web3_user        Boolean   @default(false)
-  ethereum_address String?   @unique
-  description      String?
-  country          String?
-  online           Boolean   @default(true)
-  chat_messages    Message[]
-  joined_rooms     Room[]
-  last_seen        DateTime  @default(now())
-  created_at       DateTime  @default(now())
-  updated_at       DateTime  @updatedAt
+  id            Int             @id @default(autoincrement())
+  username      String          @unique
+  profile       UserProfile?
+  preference    UserPreference?
+  online        Boolean         @default(true)
+  chat_messages Message[]
+  memberships   Membership[]
+  last_seen     DateTime        @default(now())
+  created_at    DateTime        @default(now())
+}
+
+enum SsoProvider {
+  NONE
+  FACEBOOK
+  GOOGLE
+  TWITTER
+  GITHUB
+}
+
+enum Web3Network {
+  NONE
+  ETHEREUM
+  CARDANO
+  ALGORAND
+  SOLANA
+}
+
+enum Theme {
+  SYSTEM
+  LIGHT
+  DARK
+}
+
+model UserProfile {
+  id                Int         @id @default(autoincrement())
+  user              User        @relation(fields: [user_id], references: [id])
+  user_id           Int         @unique
+  alias             String?
+  password          String?
+  avatar_url        String?
+  email_address     String?     @unique
+  is_email_verified Boolean     @default(false)
+  location          String?
+  description       String?
+  phone_number      String?     @unique
+  sso_provider      SsoProvider @default(NONE)
+  web3_address      String?     @unique
+  web3_network      Web3Network @default(NONE)
+  created_at        DateTime    @default(now())
+  updated_at        DateTime    @updatedAt
+}
+
+model UserPreference {
+  id                     Int      @id @default(autoincrement())
+  user                   User     @relation(fields: [user_id], references: [id])
+  user_id                Int      @unique
+  theme                  Theme    @default(SYSTEM)
+  subscribe_mailing_list Boolean  @default(false)
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
 }
 
 model Room {
-  id            Int       @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   name          String?
   description   String?
   password      String?
-  users         User[]
+  avatar_url    String?
   chat_messages Message[]
-  is_dm         Boolean   @default(false)
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
+  memberships   Membership[]
+  is_dm         Boolean      @default(false)
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
 }
 
 model Message {
@@ -48,6 +93,19 @@ model Message {
   room       Room     @relation(fields: [room_id], references: [id])
   room_id    Int
   content    String
-  created_at DateTime @default(now())
+  is_deleted Boolean  @default(false)
+  sent_at    DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model Membership {
+  room      Room      @relation(fields: [room_id], references: [id])
+  room_id   Int
+  user      User      @relation(fields: [user_id], references: [id])
+  user_id   Int
+  joined_at DateTime  @default(now())
+  left_at   DateTime?
+  is_admin  Boolean   @default(false)
+
+  @@id([room_id, user_id])
 }
