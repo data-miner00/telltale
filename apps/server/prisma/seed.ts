@@ -9,18 +9,19 @@ async function main() {
     },
     update: {},
     create: {
-      email: 'alice@prisma.io',
       username: 'alice',
-      password: 'callmealice',
-      avatar_url: 'https://randomuser.me/api/portraits/women/18.jpg',
-      description: 'Hi I am Alice',
-      country: 'Hungary',
-      joined_rooms: {
+      profile: {
         create: {
-          name: 'Hello Group',
-          description: 'This is a testing group',
-          is_dm: true,
+          alias: 'alice',
+          email_address: 'alice@prisma.io',
+          password: 'callmealice',
+          avatar_url: 'https://randomuser.me/api/portraits/women/18.jpg',
+          description: 'Hi I am Alice',
+          location: 'Hungary',
         },
+      },
+      preference: {
+        create: {},
       },
     },
   });
@@ -31,16 +32,19 @@ async function main() {
     },
     update: {},
     create: {
-      email: 'bob@prisma.io',
       username: 'bob',
-      password: 'callmebob',
-      avatar_url: 'https://randomuser.me/api/portraits/men/18.jpg',
-      description: 'Hi I am Bob',
-      country: 'Croatia',
-      joined_rooms: {
-        connect: {
-          id: 1,
+      profile: {
+        create: {
+          alias: 'bob',
+          email_address: 'bob@prisma.io',
+          password: 'callmebob',
+          avatar_url: 'https://randomuser.me/api/portraits/men/18.jpg',
+          description: 'Hi I am Bob',
+          location: 'Croatia',
         },
+      },
+      preference: {
+        create: {},
       },
     },
   });

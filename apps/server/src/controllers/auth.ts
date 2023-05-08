@@ -2,9 +2,14 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
-import { User } from '@prisma/client';
-
+import { User, UserProfile, UserPreference } from '@prisma/client';
 import { JWT_SECRET as jwtSecret } from '../settings';
+
+type UserProfileWithoutPassword = Omit<UserProfile, 'password'>;
+type UserInfoWithoutPassword = User & {
+  profile: UserProfileWithoutPassword;
+  preference: UserPreference;
+};
 
 export class AuthController {
   constructor(private prisma: PrismaClient) {}
@@ -12,29 +17,52 @@ export class AuthController {
   async loginAsync(req: Request, res: Response) {
     try {
       const { username, password } = req.body;
+
+      // Check if user exists
       const userExists = await this.prisma.user.findUnique({
         where: { username },
+        include: {
+          profile: true,
+          preference: true,
+        },
       });
 
       if (!userExists) {
         return res.status(400).json({ message: 'Invalid credentials' });
       }
 
+      // Check if valid password
       const validPassword = await this.comparePasswordAsync(
         password,
-        userExists.password ?? ''
+        userExists.profile?.password ?? ''
       );
 
       if (!validPassword) {
         return res.status(400).json({ message: 'Invalid credentials' });
       }
 
+      // Update last_seen
+      await this.prisma.user.update({
+        where: {
+          username,
+        },
+        data: {
+          last_seen: new Date(),
+        },
+      });
+
+      // Generate JWT token
       const token = this.generateJwtAsync({
         id: userExists.id,
         username: userExists.username,
       });
 
-      const { password: _, ...userWithoutPassword } = userExists;
+      const { password: _, ...restProfile } = userExists.profile!;
+      const userWithoutPassword: UserInfoWithoutPassword = {
+        ...userExists,
+        preference: userExists.preference!,
+        profile: restProfile,
+      };
 
       return res.status(200).json({
         user: userWithoutPassword,
@@ -77,8 +105,20 @@ export class AuthController {
       const createdUser = await this.prisma.user.create({
         data: {
           username,
-          password: hashedPassword,
-          avatar_url: this.generateRandomAvatar(),
+          profile: {
+            create: {
+              alias: username,
+              password: hashedPassword,
+              avatar_url: this.generateRandomAvatar(),
+            },
+          },
+          preference: {
+            create: {},
+          },
+        },
+        include: {
+          profile: true,
+          preference: true,
         },
       });
 
@@ -87,7 +127,12 @@ export class AuthController {
         username: createdUser.username,
       });
 
-      const { password: _, ...userWithoutPassword } = createdUser;
+      const { password: _, ...restProfile } = createdUser.profile!;
+      const userWithoutPassword: UserInfoWithoutPassword = {
+        ...createdUser,
+        preference: createdUser.preference!,
+        profile: restProfile,
+      };
 
       return res.status(201).json({ user: userWithoutPassword, jwt: token });
     } catch (error) {}
