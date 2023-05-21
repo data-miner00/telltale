@@ -7,9 +7,9 @@ import { ChevronDown, Person, Exit } from '@/lib/shared/icons';
 import router from '@/lib/shared/shared.router';
 
 const store = useUserStore();
-const { username, userId, avatarUrl } = storeToRefs(store);
+const { username, avatarUrl } = storeToRefs(store);
 
-const shortenedId = computed(() => truncateWithEllipsis(userId.value, 4));
+const shortenedId = computed(() => truncateWithEllipsis(avatarUrl.value, 4));
 
 function logout(event: Event) {
   event.preventDefault();

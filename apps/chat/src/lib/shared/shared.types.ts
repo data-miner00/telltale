@@ -1,16 +1,28 @@
 export type User = {
-  currentId: string;
+  id: number;
+  socketId: string;
   username: string;
+  online: boolean;
+  joinedAt: string;
+  alias: string;
   avatarUrl: string;
+  email?: string;
   isEmailVerified: boolean;
-  isWeb3User: boolean;
-  openAiKey: string;
+  location?: string;
+  description?: string;
+  phoneNumber?: string;
+  ssoProvider: string;
+  web3Address?: string;
+  web3Network: string;
+  openAiKey?: string;
+  lastSeen: string;
 };
 
 export type Room = {
   id: string;
   name: string;
   users: User[];
+  description?: string;
 };
 
 export type Chat = {

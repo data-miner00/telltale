@@ -6,15 +6,17 @@ import {
 } from 'vue-router';
 import MainVue from '@/views/Main.vue';
 import RoomVue from '@/views/Room.vue';
+import LoginVue from '@/views/auth/Login.vue';
+import PageContainerVue from '../modules/page-container/PageContainer.vue';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => MainVue,
+    component: () => LoginVue,
   },
   {
     path: '/room',
-    component: () => import('../modules/page-container/PageContainer.vue'),
+    component: () => PageContainerVue,
     children: [
       {
         path: ':id',

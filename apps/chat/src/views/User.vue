@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { useUserStore } from '@/lib/shared/shared.stores';
 import { storeToRefs } from 'pinia';
-import { useLocalStorage } from '@vueuse/core';
 import { ref } from 'vue';
 
 const store = useUserStore();
-const { username, userId, avatarUrl } = storeToRefs(store);
-const email = 'anon@email.com';
-const country = 'North Korea';
-const description = 'lorem ipsum dolor sit amet';
+const {
+  username,
+  id: userId,
+  avatarUrl,
+  email,
+  location,
+  description,
+  joinedAt,
+} = storeToRefs(store);
 
 const formRef = ref<HTMLFormElement>();
 
@@ -27,7 +31,7 @@ function onFormSubmit() {
         <div class="text-center">
           <img class="rounded-full mb-10" :src="avatarUrl" :alt="username" />
           <div class="font-bold text-2xl">{{ username }}</div>
-          <div>Joined on 2 Feb 2023</div>
+          <div>Joined on {{ joinedAt }}</div>
           <div class="divider"></div>
           <div>Badges</div>
         </div>
@@ -85,7 +89,7 @@ function onFormSubmit() {
           <input
             type="text"
             name="country"
-            :value="country"
+            :value="location"
             class="input input-bordered w-full"
           />
         </div>
@@ -97,7 +101,7 @@ function onFormSubmit() {
             name="description"
             :value="description"
             class="textarea-bordered textarea resize-none text-base"
-          />
+          ></textarea>
         </div>
 
         <button class="btn btn-primary mt-5">Save changes</button>

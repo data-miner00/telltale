@@ -44,7 +44,7 @@ const { copy, copied, text } = useClipboard();
         </div>
       </div>
       <div class="text-sm text-gray-500">
-        {{ membersCount }} Members • {{ onlineCount }} Online
+        {{ membersCount }} members • {{ onlineCount }} online
       </div>
     </div>
   </div>
