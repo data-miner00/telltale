@@ -11,9 +11,18 @@ type UserInfoWithoutPassword = User & {
   preference: UserPreference;
 };
 
+/**
+ * The controller class that handles authentication.
+ */
 export class AuthController {
   constructor(private prisma: PrismaClient) {}
 
+  /**
+   * Login with traditional username and password combination.
+   * @param req The request object.
+   * @param res The response object
+   * @returns The credentials populated response object.
+   */
   async loginAsync(req: Request, res: Response) {
     try {
       const { username, password } = req.body;
@@ -71,11 +80,23 @@ export class AuthController {
     } catch (error) {}
   }
 
+  /**
+   * Login with just random, unrestricted username without password.
+   * @param req The request object.
+   * @param res The response object.
+   * @todo
+   */
   async loginAnonymousAsync(req: Request, res: Response) {
     console.log('Login anonymous called');
     console.log(req.body);
   }
 
+  /**
+   * Login/signup with Metamask default address.
+   * @param req The request object.
+   * @param res The response object.
+   * @todo
+   */
   async loginMetamask(req: Request, res: Response) {
     try {
       console.log('Login metamask called');
@@ -83,6 +104,12 @@ export class AuthController {
     } catch (error) {}
   }
 
+  /**
+   * Login/signup with third-party SSO providers such as Facebook, Google and GitHub.
+   * @param req The request object.
+   * @param res The response object.
+   * @todo
+   */
   async loginSSO(req: Request, res: Response) {
     try {
       console.log('Login sso called');
@@ -90,6 +117,12 @@ export class AuthController {
     } catch (error) {}
   }
 
+  /**
+   * Register a user with traditional username/password combination.
+   * @param req The register request object.
+   * @param res The response object.
+   * @returns The registered user info populated response object.
+   */
   async registerAsync(req: Request, res: Response) {
     try {
       const { username, password } = req.body;
@@ -138,6 +171,13 @@ export class AuthController {
     } catch (error) {}
   }
 
+  /**
+   * Logout from the portal.
+   * @param req The logout request object.
+   * @param res The logout response object.
+   * @returns The actual response to the logout request.
+   * @todo
+   */
   async logoutAsync(req: Request, res: Response) {
     try {
       return res.status(200).json({ message: 'Logged out' });
