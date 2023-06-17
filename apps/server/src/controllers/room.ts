@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
+import { constants as StatusCode } from 'http2';
 
 /**
  * The controller class that handles Room related operations.
@@ -25,9 +26,13 @@ export class RoomController {
 
       // TODO: Convert into room info
 
-      return res.status(200).json({ data: userMemberships });
+      return res
+        .status(StatusCode.HTTP_STATUS_OK)
+        .json({ data: userMemberships });
     } catch {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -56,9 +61,13 @@ export class RoomController {
         },
       });
 
-      return res.status(200).json({ room: createdRoom });
+      return res
+        .status(StatusCode.HTTP_STATUS_CREATED)
+        .json({ room: createdRoom });
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -93,9 +102,11 @@ export class RoomController {
         },
       });
 
-      return res.status(200).json({ dm: createdDm });
+      return res.status(StatusCode.HTTP_STATUS_CREATED).json({ dm: createdDm });
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -129,14 +140,16 @@ export class RoomController {
       });
 
       if (!roomExists) {
-        return res.status(404).json({ message: 'Room not found' });
+        return res
+          .status(StatusCode.HTTP_STATUS_NOT_FOUND)
+          .json({ message: 'Room not found' });
       }
 
       // TODO: Check if already joined
 
       if (roomExists.password && roomExists.password != password) {
         return res
-          .status(400)
+          .status(StatusCode.HTTP_STATUS_BAD_REQUEST)
           .json({ message: 'Room password does not match' });
       }
 
@@ -148,9 +161,13 @@ export class RoomController {
         },
       });
 
-      return res.status(200).json({ message: 'Joined successfully' });
+      return res
+        .status(StatusCode.HTTP_STATUS_OK)
+        .json({ message: 'Joined successfully' });
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -173,7 +190,9 @@ export class RoomController {
       });
 
       if (!membership) {
-        return res.status(404).json({ message: 'Membership not found' });
+        return res
+          .status(StatusCode.HTTP_STATUS_NOT_FOUND)
+          .json({ message: 'Membership not found' });
       }
 
       // TODO: Check joined room
@@ -190,9 +209,13 @@ export class RoomController {
         },
       });
 
-      return res.status(200).json({ message: 'Successfully left room' });
+      return res
+        .status(StatusCode.HTTP_STATUS_OK)
+        .json({ message: 'Successfully left room' });
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -206,7 +229,9 @@ export class RoomController {
   async kickUser(req: Request, res: Response) {
     try {
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -220,7 +245,9 @@ export class RoomController {
   async deleteRoom(req: Request, res: Response) {
     try {
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 
@@ -234,7 +261,9 @@ export class RoomController {
   async editRoomDetails(req: Request, res: Response) {
     try {
     } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res
+        .status(StatusCode.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal Server Error' });
     }
   }
 }
