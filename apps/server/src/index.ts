@@ -6,6 +6,7 @@ import { PORT, ALLOWED_ORIGIN } from './settings';
 import { onConnection } from './controllers/socket';
 import authRouter from './routes/auth';
 import roomRouter from './routes/room';
+import profileRouter from './routes/profile';
 
 const app = express();
 const port = PORT;
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api/auth', authRouter);
 app.use('/api/room', roomRouter);
+app.use('/api/profile', profileRouter);
 
 io.on('connection', onConnection);
 
