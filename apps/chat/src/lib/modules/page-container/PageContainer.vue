@@ -12,7 +12,7 @@ const route = useRoute();
       <Sidebar />
     </aside>
 
-    <section class="w-full md:pl-72 h-[calc(100vh-80px)]">
+    <section class="w-full md:pl-72 min-h-[calc(100vh-80px)]">
       <Header />
       <router-view :key="(route.params.id as string)"></router-view>
     </section>

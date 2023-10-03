@@ -49,5 +49,8 @@ export const useUserStore = defineStore('user', {
     setAvatarUrl(url: string) {
       this.avatarUrl = url;
     },
+    setSocketId(socketId: string) {
+      this.socketId = socketId;
+    },
   },
 });

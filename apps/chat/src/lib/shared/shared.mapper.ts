@@ -35,24 +35,24 @@ export type LoginResponse = {
   jwt: string;
 };
 
-export function mapLoginResponseToUser(lr: LoginResponse): User {
+export function mapLoginResponseToUser(data: LoginResponse): User {
   return <User>{
-    id: lr.user.id,
+    id: data.user.id,
     socketId: '',
-    username: lr.user.username,
-    online: lr.user.online,
-    joinedAt: lr.user.created_at,
-    alias: lr.user.profile.alias,
-    avatarUrl: lr.user.profile.avatar_url,
-    email: lr.user.profile.email_address,
-    isEmailVerified: lr.user.profile.is_email_verified,
-    location: lr.user.profile.location,
-    description: lr.user.profile.description,
-    phoneNumber: lr.user.profile.phone_number,
-    ssoProvider: lr.user.profile.sso_provider,
-    web3Address: lr.user.profile.web3_address,
-    web3Network: lr.user.profile.web3_network,
+    username: data.user.username,
+    online: data.user.online,
+    joinedAt: data.user.created_at,
+    alias: data.user.profile.alias,
+    avatarUrl: data.user.profile.avatar_url,
+    email: data.user.profile.email_address,
+    isEmailVerified: data.user.profile.is_email_verified,
+    location: data.user.profile.location,
+    description: data.user.profile.description,
+    phoneNumber: data.user.profile.phone_number,
+    ssoProvider: data.user.profile.sso_provider,
+    web3Address: data.user.profile.web3_address,
+    web3Network: data.user.profile.web3_network,
     openAiKey: undefined,
-    lastSeen: lr.user.last_seen,
+    lastSeen: data.user.last_seen,
   };
 }
